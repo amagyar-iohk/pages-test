@@ -59,8 +59,7 @@ function getSubfolders(dir) {
     }
 }
 
-const reportDirSubfolders = getSubfolders('./public/reports')
-const historyDirs = reportDirSubfolders
+const historyDirs = getSubfolders('./public/reports')
     .filter((subfolder) => !isNaN(Number(subfolder)))
     .map((subfolder => parseInt(subfolder)))
     .sort((a, b) => a - b)
@@ -79,7 +78,7 @@ const base = fs.readFileSync('./base/index.html').toString().trim() + "<br>"
 const history = fs.readFileSync('./history/history-data.txt').toString().trim().replaceAll("\n", "<br>")
 
 let links = ""
-reportDirSubfolders
+getSubfolders('./public/reports')
     .filter((subfolder) => !isNaN(Number(subfolder)))
     .map((subfolder => parseInt(subfolder)))
     .sort((a, b) => a - b)
