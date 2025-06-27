@@ -46,7 +46,9 @@ jobs:
 
       - name: Extract artifact
         if: steps.download-artifact.outcome == 'success'
-        run: tar -xf ./tmp/artifact.tar -C ./public
+        run: |
+          mkdir -p ./public
+          tar -xf ./tmp/artifact.tar -C ./public
 
       - name: Aggregate reports
         run: node index.js

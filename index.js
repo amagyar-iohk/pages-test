@@ -87,5 +87,5 @@ reportDirSubfolders
         links += `<a href="./reports/${n}">Report ${n}</a><br>`
     })
 
-const index = base.replace("%HISTORY%", history).replace("%LINKS", links)
+const index = base.replace("%HISTORY%", history).replace("%LINKS%", links)
 fs.writeFileSync('./public/index.html', index)
