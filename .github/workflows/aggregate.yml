@@ -40,9 +40,13 @@ jobs:
         with:
           run-id: ${{ steps.read_run_id.outputs.run_id_from_file }}
           name: github-pages
-          path: ./public
+          path: ./tmp
           github-token: ${{ env.GH_TOKEN }}
         continue-on-error: true
+
+      - name: Extract artifact
+        if: steps.download-artifact.outcome == 'success'
+        run: tar -xf ./tmp/artifact.tar -C ./public
 
       - name: Aggregate reports
         run: node index.js
