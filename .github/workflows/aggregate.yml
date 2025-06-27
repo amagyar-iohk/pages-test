@@ -9,7 +9,8 @@ permissions:
   pages: write
   id-token: write
   contents: write
-
+  actions: read
+  
 jobs:
   aggregate:
     name: "Aggregate"
