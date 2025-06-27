@@ -22,10 +22,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read last run ID from file
+        id: read_run_id # Assign an ID to this step to reference its outputs
+        run: |
+          if [ -f "./history/lastrun" ]; then
+            LAST_RUN_ID=$(cat ./history/lastrun)
+            echo "Found last run ID: $LAST_RUN_ID"
+            echo "run_id_from_file=$LAST_RUN_ID" >> $GITHUB_OUTPUT
+          else
+            echo "lastrun file not found."
+            echo "run_id_from_file=" >> $GITHUB_OUTPUT
+          fi
+
       - name: Download previous pages artifact
         id: download-artifact
         uses: actions/download-artifact@v4
         with:
+          run-id: ${{ steps.read_run_id.outputs.run_id_from_file }}
           name: github-pages
           path: ./public
           github-token: ${{ env.GH_TOKEN }}
@@ -39,16 +52,18 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Update history
-        run: |
-          git add history
-          git commit -m "chore: update history"
-          git push
-
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: './public'
+
+      - name: Update history
+        run: |
+          echo "${{ github.run_id }}" > "./history/lastrun"
+          git add history
+          git commit -m "chore: update history"
+          git push
+
 
   update-site:
     needs: aggregate

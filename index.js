@@ -3,7 +3,6 @@ const fs = require('fs')
 // starts
 console.log("Starting")
 
-
 // checks if exists
 const publicDirExists = fs.existsSync('./public')
 if (!publicDirExists) {
