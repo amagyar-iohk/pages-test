@@ -1,14 +1,15 @@
 const fs = require('fs')
+const cp = require('child_process')
 
 // starts
 console.log("Starting")
 
 
-const baseDir = execSync('ls -la ./').toString().trim()
+const baseDir = cp.execSync('ls -la ./').toString().trim()
 console.log("Base dir", baseDir)
 
 try {
-    const lsPublic = execSync('ls -la ./public').toString().trim()
+    const lsPublic = cp.execSync('ls -la ./public').toString().trim()
     console.log("Public", lsPublic)
 } catch (e) {
     console.log("public folder not available")
