@@ -24,8 +24,8 @@ const date = new Date()
 fs.appendFileSync('./history/history-data.txt', `${date}\n`)
 
 // move some files
-const base = fs.readFileSync('./base/index.html').toString().trim() + "<b><b>"
-const history = fs.readFileSync('./history/history-data.txt').toString().trim().replaceAll("\n", "<b>")
+const base = fs.readFileSync('./base/index.html').toString().trim() + "<br>"
+const history = fs.readFileSync('./history/history-data.txt').toString().trim().replaceAll("\n", "<br>")
 base.replace("%HISTORY%", history)
 fs.writeFileSync('./public/index.html', history)
 fs.cpSync('./readme.html', './public/readme.html')
