@@ -1,0 +1,57 @@
+name: Aggregate to page
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  pages: write
+  id-token: write
+  contents: write
+
+jobs:
+  aggregate:
+    name: "Aggregate"
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download previous pages artifact
+        id: download-artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ./public
+        continue-on-error: true
+
+      - name: Aggregate reports
+        run: node index.js
+
+      - name: Update history
+        run: |
+          git add history
+          git commit -S -s -m "chore: update history"
+          git push
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public'
+
+  update-site:
+    needs: aggregate
+    name: Update report website
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
