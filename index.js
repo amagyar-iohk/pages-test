@@ -3,6 +3,14 @@ const fs = require('fs')
 // starts
 console.log("Starting")
 
+
+try {
+    const lsPublic = execSync('ls ./public').toString().trim()
+    console.log("Public", lsPublic)
+} catch (e) {
+    console.log("public folder not available")
+}
+
 // checks if exists
 const publicDirExists = fs.existsSync('./public')
 if (!publicDirExists) {
