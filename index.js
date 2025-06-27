@@ -78,7 +78,7 @@ fs.writeFileSync(`./public/reports/${nextReportId}/index.html`, page)
 const base = fs.readFileSync('./base/index.html').toString().trim() + "<br>"
 const history = fs.readFileSync('./history/history-data.txt').toString().trim().replaceAll("\n", "<br>")
 
-const links = ""
+let links = ""
 reportDirSubfolders
     .filter((subfolder) => !isNaN(Number(subfolder)))
     .map((subfolder => parseInt(subfolder)))
