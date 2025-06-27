@@ -25,7 +25,10 @@ const date = new Date()
 fs.appendFileSync('./history/history-data.txt', `${date}\n`)
 
 // move some files
-fs.cpSync('./base/index.html', './public/index.html')
+const base = fs.readFileSync('./base/index.html')
+const history = fs.readFileSync('./history/history-data.txt')
+base.replace("%HISTORY%", history)
+fs.writeFileSync('./base/index.html', history)
 fs.cpSync('./readme.html', './public/readme.html')
 
 // generate "report"
