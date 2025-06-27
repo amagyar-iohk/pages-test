@@ -10,7 +10,7 @@ permissions:
   id-token: write
   contents: write
   actions: read
-  
+
 jobs:
   aggregate:
     name: "Aggregate"
@@ -28,6 +28,7 @@ jobs:
         with:
           name: github-pages
           path: ./public
+          github-token: ${{ env.GH_TOKEN }}
         continue-on-error: true
 
       - name: Aggregate reports
