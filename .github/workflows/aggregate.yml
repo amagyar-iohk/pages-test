@@ -32,10 +32,15 @@ jobs:
       - name: Aggregate reports
         run: node index.js
 
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
       - name: Update history
         run: |
           git add history
-          git commit -S -s -m "chore: update history"
+          git commit -m "chore: update history"
           git push
 
       - name: Upload pages artifact
