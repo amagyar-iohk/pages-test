@@ -23,11 +23,7 @@ if (!historyDirExists) {
 const date = new Date()
 fs.appendFileSync('./history/history-data.txt', `${date}\n`)
 
-// move some files
-const base = fs.readFileSync('./base/index.html').toString().trim() + "<br>"
-const history = fs.readFileSync('./history/history-data.txt').toString().trim().replaceAll("\n", "<br>")
-base.replace("%HISTORY%", history)
-fs.writeFileSync('./public/index.html', history)
+// add readme
 fs.cpSync('./readme.html', './public/readme.html')
 
 // generate "report"
@@ -65,3 +61,19 @@ const nextReportId = historyDirs[historyDirs.length - 1] + 1 || 1
 fs.mkdirSync(`./public/reports/${nextReportId}`)
 fs.copyFileSync('./history/history-data.txt', `./public/reports/${nextReportId}/history-data.txt`)
 fs.writeFileSync(`./public/reports/${nextReportId}/index.html`, page)
+
+// build index
+const base = fs.readFileSync('./base/index.html').toString().trim() + "<br>"
+const history = fs.readFileSync('./history/history-data.txt').toString().trim().replaceAll("\n", "<br>")
+
+const links = ""
+reportDirSubfolders
+    .filter((subfolder) => !isNaN(Number(subfolder)))
+    .map((subfolder => parseInt(subfolder)))
+    .sort((a, b) => a - b)
+    .forEach((n) => {
+        links += `<a href="./reports/${n}">Report ${n}</a><br>`
+    })
+
+const index = base.replace("%HISTORY%", history).replace("%LINKS", links)
+fs.writeFileSync('./public/index.html', index)
