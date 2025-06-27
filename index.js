@@ -28,7 +28,7 @@ fs.appendFileSync('./history/history-data.txt', `${date}\n`)
 const base = fs.readFileSync('./base/index.html').toString().trim()
 const history = fs.readFileSync('./history/history-data.txt').toString().trim()
 base.replace("%HISTORY%", history)
-fs.writeFileSync('./base/index.html', history)
+fs.writeFileSync('./public/index.html', history)
 fs.cpSync('./readme.html', './public/readme.html')
 
 // generate "report"
