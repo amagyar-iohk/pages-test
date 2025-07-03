@@ -25,8 +25,8 @@ jobs:
       - name: Read last run ID from file
         id: read_run_id # Assign an ID to this step to reference its outputs
         run: |
-          if [ -f "./history/lastrun" ]; then
-            LAST_RUN_ID=$(cat ./history/lastrun)
+          if [ -f "./latest-history/lastrun" ]; then
+            LAST_RUN_ID=$(cat ./latest-history/lastrun)
             echo "Found last run ID: $LAST_RUN_ID"
             echo "run_id_from_file=$LAST_RUN_ID" >> $GITHUB_OUTPUT
           else
@@ -62,6 +62,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: './public'
+          retention-days: 90
 
       - name: Update history
         run: |
@@ -69,7 +70,6 @@ jobs:
           git add history
           git commit -m "chore: update history"
           git push
-
 
   update-site:
     needs: aggregate
